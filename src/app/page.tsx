@@ -36,8 +36,14 @@ export default function ProductBrowser() {
       const res = await fetch(url.toString());
       const data = await res.json();
       
-      setProducts(data.data);
-      setNextCursor(data.nextCursor);
+      if (data.data) {
+        setProducts(data.data);
+        setNextCursor(data.nextCursor);
+      } else {
+        console.error("API Error:", data.error);
+        setProducts([]);
+        setToast("Database Connection Error. Did you set Vercel Environment Variables?");
+      }
     } catch (e) {
       console.error(e);
     } finally {
